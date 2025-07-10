@@ -23,7 +23,16 @@ Claude Code 사용자를 위한 MCP (Model Context Protocol) 서버 설정 관�
 - **Toast 알림**: 사용자 행동에 대한 실시간 피드백
 - **반응형 디자인**: DaisyUI 컴포넌트를 활용한 모바일 친화적 인터페이스
 
-## 🚀 빠른 시작
+## 📥 다운로드
+
+### 빌드된 릴리스
+[GitHub Releases](https://github.com/hardboil/mcp-server-config-app/releases)에서 최신 버전을 다운로드하세요:
+
+- **Windows**: `.msi` 설치 파일
+- **macOS**: `.dmg` 파일 (Universal Binary - Intel & Apple Silicon)
+- **Linux**: `.AppImage` 또는 `.deb` 패키지
+
+## 🚀 개발 환경 설정
 
 ### 필요 조건
 - Node.js 18+

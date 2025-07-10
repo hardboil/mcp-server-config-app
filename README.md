@@ -23,7 +23,16 @@ A desktop application built with Tauri for managing MCP (Model Context Protocol)
 - **Toast Notifications**: Real-time feedback for user actions
 - **Responsive Design**: Mobile-friendly interface with DaisyUI components
 
-## 🚀 Quick Start
+## 📥 Download
+
+### Pre-built Releases
+Download the latest version from [GitHub Releases](https://github.com/hardboil/mcp-server-config-app/releases):
+
+- **Windows**: `.msi` installer
+- **macOS**: `.dmg` file (Universal Binary - Intel & Apple Silicon)
+- **Linux**: `.AppImage` or `.deb` package
+
+## 🚀 Development Setup
 
 ### Prerequisites
 - Node.js 18+

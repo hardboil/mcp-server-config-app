@@ -80,10 +80,33 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
-          releaseName: 'MCP Server Config App v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
-          prerelease: false
+          releaseName: 'MCP Server Configuration App v__VERSION__'
+          releaseBody: |
+            ## 🚀 MCP Server Configuration App Release
+            
+            A desktop application for managing MCP (Model Context Protocol) server configurations for Claude Code users.
+            
+            ### 📦 Downloads
+            - **Windows**: Download the `.msi` installer
+            - **macOS**: Download the `.dmg` file (Universal Binary - supports both Intel and Apple Silicon)
+            - **Linux**: Download the `.AppImage` or `.deb` package
+            
+            ### ✨ Key Features
+            - Modern UI with DaisyUI components and responsive design
+            - Dual editing modes: Form Editor and JSON Editor
+            - Real-time configuration validation
+            - Server library management with saved configurations
+            - Toast notifications for better user experience
+            
+            ### 🛠️ Technical Details
+            - Built with Tauri + TypeScript + Rust
+            - Cross-platform compatibility
+            - Native file dialogs and system integration
+            
+            ---
+            🤖 **Developed with Claude Code** | 🌍 [Documentation](https://github.com/${{ github.repository }})
+          releaseDraft: ${{ github.ref_type != 'tag' }}
+          prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'rc') }}
           args: ${{ matrix.args }}
 
   lint-and-test:
