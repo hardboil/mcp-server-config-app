@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCP Server Config App</title>
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
+
+  <body class="bg-base-200">
+    <div class="navbar bg-base-100 shadow-lg">
+      <div class="navbar-start">
+        <h1 class="text-xl font-bold">MCP Server Configuration</h1>
+      </div>
+      <div class="navbar-end">
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+            <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+          </div>
+          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a onclick="setTheme('light')">Light</a></li>
+            <li><a onclick="setTheme('dark')">Dark</a></li>
+            <li><a onclick="setTheme('cupcake')">Cupcake</a></li>
+            <li><a onclick="setTheme('emerald')">Emerald</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <main class="container mx-auto max-w-4xl p-4 sm:p-6">
+      <div class="space-y-4 sm:space-y-6">
+        <!-- Project Directory Section -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title text-primary">
+              <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2V7z"></path>
+              </svg>
+              Project Directory
+            </h2>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input 
+                id="directory-input" 
+                type="text" 
+                placeholder="Select project directory..." 
+                readonly 
+                class="input input-bordered flex-1"
+              />
+              <button id="select-directory-btn" class="btn btn-primary">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2V7z"></path>
+                </svg>
+                <span class="hidden sm:inline">Browse</span>
+                <span class="sm:hidden">Select</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MCP Servers Section -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+              <h2 class="card-title text-primary">
+                <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l7-7m-7 7l7 7"></path>
+                </svg>
+                MCP Servers
+              </h2>
+              <div class="flex gap-2">
+                <button id="add-server-btn" class="btn btn-primary btn-sm">
+                  <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                  </svg>
+                  Add Server
+                </button>
+                <button id="json-editor-btn" class="btn btn-outline btn-secondary btn-sm">
+                  <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                  </svg>
+                  JSON Editor
+                </button>
+              </div>
+            </div>
+            <div id="servers-container" class="space-y-2 mt-4">
+              <!-- Server items will be dynamically added here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Saved Servers Section -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title text-primary">
+              <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+              </svg>
+              Saved Servers
+            </h2>
+            <div id="saved-servers-container" class="space-y-2">
+              <!-- Saved server items will be dynamically added here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons Section -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <div class="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4">
+              <button id="validate-btn" class="btn btn-outline btn-info">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Validate Configuration
+              </button>
+              <button id="save-config-btn" class="btn btn-success" disabled>
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                </svg>
+                Save .mcp.json
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal for adding/editing servers -->
+    <dialog id="server-modal" class="modal">
+      <div class="modal-box w-11/12 max-w-4xl">
+        <div class="flex justify-between items-center mb-4">
+          <h3 id="modal-title" class="font-bold text-lg">Add Server</h3>
+          <button class="btn btn-sm btn-circle btn-ghost" onclick="document.getElementById('server-modal').close()">✕</button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs tabs-bordered mb-4">
+          <a id="tab-form" class="tab" onclick="app.switchServerModalTab('form')">Form Editor</a>
+          <a id="tab-json" class="tab tab-active" onclick="app.switchServerModalTab('json')">JSON Editor</a>
+        </div>
+
+        <!-- Form Tab Content -->
+        <div id="form-tab-content" class="tab-content" style="display: none;">
+          <form id="server-form" class="space-y-4">
+            <div class="form-control">
+              <label class="label" for="server-name">
+                <span class="label-text">Server Name</span>
+              </label>
+              <input type="text" id="server-name" class="input input-bordered" required />
+            </div>
+            <div class="form-control">
+              <label class="label" for="server-command">
+                <span class="label-text">Command</span>
+              </label>
+              <input type="text" id="server-command" class="input input-bordered" required />
+            </div>
+            <div class="form-control">
+              <label class="label" for="server-args">
+                <span class="label-text">Arguments (one per line)</span>
+                <span class="label-text-alt">예: 첫 번째 줄에 "-y", 두 번째 줄에 "@modelcontextprotocol/server-sequential-thinking"</span>
+              </label>
+              <textarea 
+                id="server-args" 
+                class="textarea textarea-bordered" 
+                rows="4"
+                placeholder="-y&#10;@modelcontextprotocol/server-sequential-thinking&#10;--option&#10;value"
+              ></textarea>
+              <div class="label">
+                <span class="label-text-alt">💡 빈 줄은 무시됩니다. 각 줄이 하나의 argument가 됩니다.</span>
+              </div>
+            </div>
+            <div class="form-control">
+              <label class="label" for="server-env">
+                <span class="label-text">Environment Variables (JSON format)</span>
+              </label>
+              <textarea id="server-env" class="textarea textarea-bordered" rows="3" placeholder='{"KEY": "value"}'></textarea>
+            </div>
+          </form>
+        </div>
+
+        <!-- JSON Tab Content -->
+        <div id="json-tab-content" class="tab-content" style="display: block;">
+          <div class="space-y-4">
+            <div class="alert alert-info">
+              <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>JSON 형식으로 서버 설정을 직접 편집할 수 있습니다. 설정이 완료되면 Form Editor에 자동으로 반영됩니다.</span>
+            </div>
+            
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Server Configuration (JSON)</span>
+              </label>
+              <div class="relative">
+                <textarea 
+                  id="single-server-json" 
+                  class="textarea textarea-bordered w-full h-64 font-mono text-sm resize-none"
+                  placeholder='{
+  "mcpServers": {
+    "server-name": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-time",
+        "--local-timezone=America/New_York"
+      ],
+      "env": {
+        "API_KEY": "your-api-key"
+      }
+    }
+  }
+}'
+                ></textarea>
+                <div id="single-server-json-error" class="absolute top-2 right-2 hidden">
+                  <div class="badge badge-error">JSON 오류</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-2">
+              <button id="single-server-format-btn" class="btn btn-outline btn-info btn-sm">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.79 4 8 4s8-1.79 8-4V7c0-2.21-3.79-4-8-4s-8 1.79-8 4z"></path>
+                </svg>
+                Format JSON
+              </button>
+              <button id="single-server-sync-to-form-btn" class="btn btn-outline btn-secondary btn-sm">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Sync to Form
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-action">
+          <button type="submit" id="server-save-btn" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-ghost" onclick="document.getElementById('server-modal').close()">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- JSON Editor Modal -->
+    <dialog id="json-editor-modal" class="modal">
+      <div class="modal-box w-11/12 max-w-4xl h-5/6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-bold text-lg">JSON Configuration Editor</h3>
+          <button class="btn btn-sm btn-circle btn-ghost" onclick="document.getElementById('json-editor-modal').close()">✕</button>
+        </div>
+        
+        <div class="space-y-4 h-full">
+          <div class="alert alert-info">
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>직접 JSON 형식으로 MCP 서버 설정을 입력하거나 수정할 수 있습니다.</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 h-4/5">
+            <!-- JSON Editor -->
+            <div class="flex flex-col h-full">
+              <label class="label">
+                <span class="label-text font-semibold">JSON Configuration</span>
+              </label>
+              <div class="flex-1 relative">
+                <textarea 
+                  id="json-editor-textarea" 
+                  class="textarea textarea-bordered w-full h-full font-mono text-sm resize-none"
+                  placeholder='입력 예시:
+{
+  "mcpServers": {
+    "time": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-time",
+        "--local-timezone=America/New_York"
+      ]
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    }
+  }
+}'
+                ></textarea>
+                <div id="json-error-display" class="absolute top-2 right-2 hidden">
+                  <div class="badge badge-error">JSON 오류</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="flex flex-col h-full">
+              <label class="label">
+                <span class="label-text font-semibold">Preview</span>
+              </label>
+              <div class="flex-1 bg-base-200 rounded-lg p-4 overflow-auto">
+                <div id="json-preview" class="space-y-2">
+                  <p class="text-sm text-base-content/70">JSON을 입력하면 여기에 미리보기가 표시됩니다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-between">
+            <div class="flex gap-2">
+              <button id="json-format-btn" class="btn btn-outline btn-info btn-sm">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.79 4 8 4s8-1.79 8-4V7c0-2.21-3.79-4-8-4s-8 1.79-8 4z"></path>
+                </svg>
+                Format JSON
+              </button>
+              <button id="json-load-current-btn" class="btn btn-outline btn-secondary btn-sm">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                </svg>
+                Load Current
+              </button>
+            </div>
+            <div class="flex gap-2">
+              <button id="json-apply-btn" class="btn btn-primary">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                Apply Configuration
+              </button>
+              <button class="btn btn-ghost" onclick="document.getElementById('json-editor-modal').close()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+  </body>
+</html>
