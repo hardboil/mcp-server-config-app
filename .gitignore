@@ -75,3 +75,6 @@ coverage/
 
 # Optional eslint cache
 .eslintcache
+
+.mcp.json
+CLAUDE.md

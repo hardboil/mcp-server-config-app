@@ -3,7 +3,7 @@ import { toast } from "./toast";
 
 interface McpServer {
   command: string;
-  args: string[];
+  args?: string[];
   env?: Record<string, string>;
 }
 
@@ -251,7 +251,7 @@ class McpConfigApp {
         }
         
       } catch (error) {
-        toast.error(`JSON 파싱 실패: ${error.message}`);
+        toast.error(`JSON 파싱 실패: ${error instanceof Error ? error.message : String(error)}`);
         return;
       }
     } else {
@@ -614,7 +614,7 @@ class McpConfigApp {
       
     } catch (error) {
       errorDisplay.classList.remove('hidden');
-      preview.innerHTML = `<div class="text-error text-sm">JSON 오류: ${error.message}</div>`;
+      preview.innerHTML = `<div class="text-error text-sm">JSON 오류: ${error instanceof Error ? error.message : String(error)}</div>`;
     }
   }
 
@@ -633,7 +633,7 @@ class McpConfigApp {
       this.updateJsonPreview();
       toast.success("JSON 포맷팅 완료");
     } catch (error) {
-      toast.error(`JSON 포맷팅 실패: ${error.message}`);
+      toast.error(`JSON 포맷팅 실패: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -697,7 +697,7 @@ class McpConfigApp {
       toast.success(`${Object.keys(config.mcpServers).length}개의 서버 설정이 적용되었습니다`);
       
     } catch (error) {
-      toast.error(`JSON 적용 실패: ${error.message}`);
+      toast.error(`JSON 적용 실패: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -899,7 +899,7 @@ class McpConfigApp {
       toast.success("JSON 설정이 폼에 적용되었습니다");
       
     } catch (error) {
-      toast.error(`JSON 파싱 실패: ${error.message}`);
+      toast.error(`JSON 파싱 실패: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -979,7 +979,7 @@ class McpConfigApp {
       this.updateSingleServerJsonValidation();
       toast.success("JSON 포맷팅 완료");
     } catch (error) {
-      toast.error(`JSON 포맷팅 실패: ${error.message}`);
+      toast.error(`JSON 포맷팅 실패: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
