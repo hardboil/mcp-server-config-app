@@ -4,6 +4,8 @@ A desktop application built with Tauri for managing MCP (Model Context Protocol)
 
 > 🤖 **Developed with Claude Code** - This application was built using [Claude Code](https://claude.ai/code), Anthropic's AI-powered development environment.
 
+> 🌍 **Language**: [English](README.md) | [한국어](README.ko.md)
+
 ## 📋 Key Features
 
 ### 🎯 Core Functionality

@@ -4,6 +4,8 @@ Claude Code 사용자를 위한 MCP (Model Context Protocol) 서버 설정 관�
 
 > 🤖 **Claude Code로 개발됨** - 이 애플리케이션은 Anthropic의 AI 기반 개발 환경인 [Claude Code](https://claude.ai/code)를 사용하여 구축되었습니다.
 
+> 🌍 **Language**: [English](README.md) | [한국어](README.ko.md)
+
 ## 📋 주요 기능
 
 ### 🎯 핵심 기능
