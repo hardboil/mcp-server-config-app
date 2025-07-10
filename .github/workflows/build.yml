@@ -53,6 +53,15 @@ jobs:
       - name: Build frontend
         run: npm run build
 
+      - name: Verify icon files exist
+        run: |
+          echo "Checking for icon files..."
+          ls -la src-tauri/icons/
+          echo "32x32.png exists:" $(test -f src-tauri/icons/32x32.png && echo "YES" || echo "NO")
+          echo "128x128.png exists:" $(test -f src-tauri/icons/128x128.png && echo "YES" || echo "NO")
+          echo "icon.icns exists:" $(test -f src-tauri/icons/icon.icns && echo "YES" || echo "NO")
+          echo "icon.ico exists:" $(test -f src-tauri/icons/icon.ico && echo "YES" || echo "NO")
+
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
