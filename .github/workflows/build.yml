@@ -78,38 +78,57 @@ jobs:
           echo "icon.ico exists:" $(if (Test-Path "src-tauri/icons/icon.ico") { "YES" } else { "NO" })
         shell: pwsh
 
-      - name: Build Tauri app
+      - name: Build Tauri app (without release)
+        if: github.ref_type != 'tag'
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
-          releaseName: 'MCP Server Configuration App v__VERSION__'
+          args: ${{ matrix.args }}
+
+      - name: Build Tauri app (with release)
+        if: github.ref_type == 'tag'
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'MCP Server Configuration App ${{ github.ref_name }}'
           releaseBody: |
-            ## 🚀 MCP Server Configuration App Release
+            ## 🚀 MCP Server Configuration App ${{ github.ref_name }}
             
             A desktop application for managing MCP (Model Context Protocol) server configurations for Claude Code users.
             
             ### 📦 Downloads
-            - **Windows**: Download the `.msi` installer
+            Choose the appropriate file for your operating system:
+            
+            - **Windows**: Download the `.msi` installer file
             - **macOS**: Download the `.dmg` file (Universal Binary - supports both Intel and Apple Silicon)
-            - **Linux**: Download the `.AppImage` or `.deb` package
+            - **Linux**: Download the `.AppImage` file for universal compatibility, or the `.deb` package for Debian/Ubuntu
             
             ### ✨ Key Features
-            - Modern UI with DaisyUI components and responsive design
-            - Dual editing modes: Form Editor and JSON Editor
-            - Real-time configuration validation
-            - Server library management with saved configurations
-            - Toast notifications for better user experience
+            - 🎨 **Modern UI** with DaisyUI components and responsive design
+            - ✏️ **Dual editing modes**: Form Editor and JSON Editor with real-time sync
+            - ✅ **Real-time validation** for MCP server configurations
+            - 📚 **Server library management** with saved configurations for reuse
+            - 🔔 **Toast notifications** for better user experience
+            - 🌙 **Theme switching** with multiple DaisyUI themes
             
             ### 🛠️ Technical Details
-            - Built with Tauri + TypeScript + Rust
-            - Cross-platform compatibility
+            - Built with **Tauri** + **TypeScript** + **Rust**
+            - Cross-platform compatibility (Windows, macOS, Linux)
             - Native file dialogs and system integration
+            - Local data storage with JSON configuration files
+            
+            ### 📋 Installation Instructions
+            1. Download the appropriate file for your platform
+            2. **Windows**: Run the `.msi` installer
+            3. **macOS**: Open the `.dmg` file and drag the app to Applications
+            4. **Linux**: Make the `.AppImage` executable and run, or install the `.deb` package
             
             ---
-            🤖 **Developed with Claude Code** | 🌍 [Documentation](https://github.com/${{ github.repository }})
-          releaseDraft: ${{ github.ref_type != 'tag' }}
+            🤖 **Developed with Claude Code** | 🌍 [Documentation](https://github.com/${{ github.repository }}) | 📝 [Korean README](https://github.com/${{ github.repository }}/blob/main/README.ko.md)
+          releaseDraft: false
           prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'rc') }}
           args: ${{ matrix.args }}
 
