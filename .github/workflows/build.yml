@@ -53,7 +53,8 @@ jobs:
       - name: Build frontend
         run: npm run build
 
-      - name: Verify icon files exist
+      - name: Verify icon files exist (Unix)
+        if: runner.os != 'Windows'
         run: |
           echo "Checking for icon files..."
           ls -la src-tauri/icons/
@@ -61,6 +62,17 @@ jobs:
           echo "128x128.png exists:" $(test -f src-tauri/icons/128x128.png && echo "YES" || echo "NO")
           echo "icon.icns exists:" $(test -f src-tauri/icons/icon.icns && echo "YES" || echo "NO")
           echo "icon.ico exists:" $(test -f src-tauri/icons/icon.ico && echo "YES" || echo "NO")
+
+      - name: Verify icon files exist (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          echo "Checking for icon files..."
+          Get-ChildItem -Path "src-tauri/icons/" -Name
+          echo "32x32.png exists:" $(if (Test-Path "src-tauri/icons/32x32.png") { "YES" } else { "NO" })
+          echo "128x128.png exists:" $(if (Test-Path "src-tauri/icons/128x128.png") { "YES" } else { "NO" })
+          echo "icon.icns exists:" $(if (Test-Path "src-tauri/icons/icon.icns") { "YES" } else { "NO" })
+          echo "icon.ico exists:" $(if (Test-Path "src-tauri/icons/icon.ico") { "YES" } else { "NO" })
+        shell: pwsh
 
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
